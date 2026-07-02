@@ -645,7 +645,7 @@
             <circle cx="40" cy="34" r="15"/>
             <path class="ring-spark" d="M32 10 l2.4 5.2 5.6 0.6 -4.1 3.9 1.1 5.5 -4.9 -2.9 -4.9 2.9 1.1 -5.5 -4.1 -3.9 5.6 -0.6 Z"/>
           </svg>
-          <p class="monogram-small">J &amp; A</p>
+          <p class="monogram-small">John Paul <br/>&amp; <br/> Ayana</p>
           
         </div>
       </div>
@@ -1037,6 +1037,17 @@
 
     window.addEventListener('load', tryStart);
   })();
+
+  /* ---------- Hide couple photo when ?t=s ---------- */
+(function () {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get("tar") === "l") {
+        var img = document.getElementById("couplePhoto");
+        if (img) {
+            img.removeAttribute("src");
+        }
+    }
+})();
 
   /* ---------- Add to Calendar ---------- */
   function addToCalendar(type){
