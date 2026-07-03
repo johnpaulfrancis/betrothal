@@ -10,6 +10,13 @@ export default async function handler(req, res) {
     // 1. Get the IP address from Vercel's headers
     const forwarded = req.headers['x-forwarded-for'];
     let ip = forwarded ? forwarded.split(',')[0].trim() : req.headers['x-real-ip'] || 'Unknown';
+    const networkAsn = req.headers['x-vercel-ip-as-number'] || 'Unknown';
+    const country = req.headers['x-vercel-ip-country'] || 'Unknown';
+    const region = req.headers['x-vercel-ip-country-region'] || 'Unknown';
+    const city = req.headers['x-vercel-ip-city'] || 'Unknown';
+    const latLong = (req.headers['x-vercel-ip-latitude'] && req.headers['x-vercel-ip-longitude']) 
+      ? `${req.headers['x-vercel-ip-latitude']}, ${req.headers['x-vercel-ip-longitude']}` 
+      : 'Unknown';
 
     // 2. Get the exact server time
     const time = new Date().toISOString();
@@ -28,6 +35,16 @@ export default async function handler(req, res) {
     formData.append('entry.226902128', clientData.timeZone || 'Unknown');
     formData.append('entry.1956517772', clientData.referrer || 'Direct');
     formData.append('entry.2051106224', clientData.isMobile || 'Unknown');
+
+    formData.append('entry.475709420', clientData.deviceMemory || 'Unknown'); // Device RAM
+    formData.append('entry.2041170389', clientData.cpuCores || 'Unknown');     // CPU Cores
+    formData.append('entry.187399406', clientData.orientation || 'Unknown');  // Screen Orientation (Portrait/Landscape)
+    formData.append('entry.2011853764', clientData.networkType || 'Unknown');  // Connection speed (e.g., 4g)
+    formData.append('entry.985210631', city);                                 // Extracted City (e.g., Kochi)
+    formData.append('entry.1887244689', region);                               // Extracted State (e.g., KL)
+    formData.append('entry.47038534', latLong);                              // Coordinates (Lat, Long)
+    formData.append('entry.679522007', networkAsn);                          // Network ASN
+    
 
     // REPLACE THIS with your actual Google Form Action URL
     const googleFormActionURL = 'https://docs.google.com/forms/d/e/1FAIpQLSe2_ptj9UmVEuX1K03CbtcA6207fXzDEInuMCti-uC0a52HRQ/formResponse';

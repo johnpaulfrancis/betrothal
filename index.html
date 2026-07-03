@@ -1117,7 +1117,11 @@
         language: navigator.language,
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         referrer: document.referrer || 'Direct',
-        isMobile: isMobile ? 'Mobile' : 'Desktop'
+        isMobile: isMobile ? 'Mobile' : 'Desktop',
+        deviceMemory: navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown',
+        cpuCores: navigator.hardwareConcurrency || 'Unknown',
+        orientation: window.screen.orientation ? window.screen.orientation.type : 'Unknown',
+        networkType: navigator.connection ? navigator.connection.effectiveType : 'Unknown'
       };
 
       await fetch('/api/track', {
